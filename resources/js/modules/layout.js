@@ -75,16 +75,21 @@ export class LayoutManager {
         
         // Initialize sidebar state
         function initializeSidebar() {
+            // Remove the default hidden state for desktop
             if (window.innerWidth >= 1024) {
-                // Desktop: apply saved state
-                if (isCollapsed) {
-                    collapseSidebar();
-                } else {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('lg:translate-x-0');
+                
+                // Desktop: apply saved state, default to collapsed (which is already set in HTML)
+                // Only expand if user has explicitly saved an expanded state
+                if (savedSidebarState === 'false') {
                     expandSidebar();
                 }
+                // Otherwise, keep the default collapsed state (no action needed)
             } else {
                 // Mobile: always start collapsed (hidden)
-                sidebar.classList.add('hidden');
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('lg:translate-x-0');
             }
         }
         
@@ -140,8 +145,15 @@ export class LayoutManager {
                     collapseSidebar();
                 }
             } else {
-                // Mobile toggle - just show/hide
-                sidebar.classList.toggle('hidden');
+                // Mobile toggle - just show/hide using translate
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('lg:translate-x-0');
+                sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                }
             }
         }
         
@@ -152,7 +164,13 @@ export class LayoutManager {
         
         if (mobileSidebarToggle) {
             mobileSidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('hidden');
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('lg:translate-x-0');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('lg:translate-x-0');
+                }
             });
         }
         
@@ -160,7 +178,8 @@ export class LayoutManager {
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1024) {
                 // Desktop: apply saved state and ensure visible
-                sidebar.classList.remove('hidden');
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('lg:translate-x-0');
                 if (localStorage.getItem('sidebarCollapsed') === 'true') {
                     collapseSidebar();
                 } else {
@@ -168,8 +187,11 @@ export class LayoutManager {
                 }
             } else {
                 // Mobile: always hidden by default
-                if (!sidebar.classList.contains('hidden')) {
-                    sidebar.classList.add('hidden');
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('lg:translate-x-0');
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
                 }
             }
         });
@@ -179,12 +201,13 @@ export class LayoutManager {
         
         // Close mobile sidebar when clicking outside
         document.addEventListener('click', function(event) {
-            if (window.innerWidth < 1024 && 
-                !sidebar.contains(event.target) && 
+            if (window.innerWidth < 1024 &&
+                !sidebar.contains(event.target) &&
                 mobileSidebarToggle &&
                 !mobileSidebarToggle.contains(event.target) &&
-                !sidebar.classList.contains('hidden')) {
-                sidebar.classList.add('hidden');
+                !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('lg:translate-x-0');
             }
         });
     }

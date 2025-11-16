@@ -104,13 +104,14 @@ Route::middleware(['auth', 'localization'])->group(function () {
     // PAYMENT MANAGEMENT
     // =====================================================================
     Route::prefix('payments')->name('payments.')->group(function () {
-        Route::resource('/', PaymentController::class)->parameters(['' => 'payment']);
-        
-        // Bulk payment routes
+        // Bulk payment routes (must come before resource routes)
         Route::get('/create-bulk', [PaymentController::class, 'createBulk'])
             ->name('create-bulk');
         Route::post('/store-bulk', [PaymentController::class, 'storeBulk'])
             ->name('store-bulk');
+        
+        // Resource routes
+        Route::resource('/', PaymentController::class)->parameters(['' => 'payment']);
     });
 
     // =====================================================================

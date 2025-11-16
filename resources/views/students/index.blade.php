@@ -185,21 +185,10 @@
                 <!-- Grade Filter -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Grade</label>
-                    <select name="grade" class="block w-full border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
-                        <option value="">All Grades</option>
-                        <option value="1" {{ request('grade') == '1' ? 'selected' : '' }}>Grade 1</option>
-                        <option value="2" {{ request('grade') == '2' ? 'selected' : '' }}>Grade 2</option>
-                        <option value="3" {{ request('grade') == '3' ? 'selected' : '' }}>Grade 3</option>
-                        <option value="4" {{ request('grade') == '4' ? 'selected' : '' }}>Grade 4</option>
-                        <option value="5" {{ request('grade') == '5' ? 'selected' : '' }}>Grade 5</option>
-                        <option value="6" {{ request('grade') == '6' ? 'selected' : '' }}>Grade 6</option>
-                        <option value="7" {{ request('grade') == '7' ? 'selected' : '' }}>Grade 7</option>
-                        <option value="8" {{ request('grade') == '8' ? 'selected' : '' }}>Grade 8</option>
-                        <option value="9" {{ request('grade') == '9' ? 'selected' : '' }}>Grade 9</option>
-                        <option value="10" {{ request('grade') == '10' ? 'selected' : '' }}>Grade 10</option>
-                        <option value="11" {{ request('grade') == '11' ? 'selected' : '' }}>Grade 11</option>
-                        <option value="12" {{ request('grade') == '12' ? 'selected' : '' }}>Grade 12</option>
-                    </select>
+                    <input type="text" name="grade"
+                           class="block w-full border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+                           placeholder="Enter grade (e.g., 7, 9, etc.)"
+                           value="{{ request('grade') }}">
                 </div>
                 
                 <!-- Payment Status Filter -->

@@ -66,11 +66,11 @@ class DatabaseSeeder extends Seeder
         $teacher3 = Teacher::find(3);
         $teacher3->subjects()->attach([5]); // English
 
-        // Create students
+        // Create students with consistent grade formats (just numbers)
         $students = [
-            ['first_name' => 'Youssef', 'last_name' => 'Khalil', 'phone' => '+212600000004', 'joined_date' => '2024-03-01'],
-            ['first_name' => 'Amina', 'last_name' => 'Rahmani', 'phone' => '+212600000005', 'joined_date' => '2024-03-05'],
-            ['first_name' => 'Omar', 'last_name' => 'Bouzid', 'phone' => '+212600000006', 'joined_date' => '2024-03-10'],
+            ['first_name' => 'Youssef', 'last_name' => 'Khalil', 'phone' => '+212600000004', 'grade' => '7', 'joined_date' => '2024-03-01'],
+            ['first_name' => 'Amina', 'last_name' => 'Rahmani', 'phone' => '+212600000005', 'grade' => '8', 'joined_date' => '2024-03-05'],
+            ['first_name' => 'Omar', 'last_name' => 'Bouzid', 'phone' => '+212600000006', 'grade' => '9', 'joined_date' => '2024-03-10'],
         ];
 
         foreach ($students as $student) {
@@ -87,13 +87,13 @@ class DatabaseSeeder extends Seeder
         $student3 = Student::find(3);
         $student3->subjects()->attach([1, 2, 3, 4, 5]); // All subjects
 
-        // Create classes
+        // Create classes with grade levels
         $classes = [
-            ['teacher_id' => 1, 'subject_id' => 1, 'duration_minutes' => 60, 'class_date' => '2024-03-20 10:00:00'], // Math class
-            ['teacher_id' => 1, 'subject_id' => 2, 'duration_minutes' => 90, 'class_date' => '2024-03-20 14:00:00'], // Physics class
-            ['teacher_id' => 2, 'subject_id' => 3, 'duration_minutes' => 120, 'class_date' => '2024-03-21 09:00:00'], // SVT class
-            ['teacher_id' => 2, 'subject_id' => 4, 'duration_minutes' => 60, 'class_date' => '2024-03-21 11:00:00'], // French class
-            ['teacher_id' => 3, 'subject_id' => 5, 'duration_minutes' => 90, 'class_date' => '2024-03-21 15:00:00'], // English class
+            ['teacher_id' => 1, 'subject_id' => 1, 'name' => 'Mathematics Grade 7-8', 'grade_levels' => ['7', '8']], // Math class
+            ['teacher_id' => 1, 'subject_id' => 2, 'name' => 'Physics Grade 9', 'grade_levels' => ['9']], // Physics class
+            ['teacher_id' => 2, 'subject_id' => 3, 'name' => 'SVT All Grades', 'grade_levels' => null], // SVT class (all grades)
+            ['teacher_id' => 2, 'subject_id' => 4, 'name' => 'French Grade 7-9', 'grade_levels' => ['7', '8', '9']], // French class
+            ['teacher_id' => 3, 'subject_id' => 5, 'name' => 'English Grade 8-9', 'grade_levels' => ['8', '9']], // English class
         ];
 
         foreach ($classes as $class) {

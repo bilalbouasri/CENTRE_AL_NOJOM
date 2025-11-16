@@ -136,4 +136,36 @@ class Student extends Model
 
         return 'unpaid';
     }
+
+    /**
+     * Check if student has a specific subject.
+     */
+    public function hasSubject($subjectId): bool
+    {
+        return $this->subjects()->where('subjects.id', $subjectId)->exists();
+    }
+
+    /**
+     * Check if student can join a class (has the class subject and correct grade level).
+     */
+    public function canJoinClass(Classes $class): bool
+    {
+        return $this->hasSubject($class->subject_id) && $class->acceptsGrade($this->grade);
+    }
+
+    /**
+     * Get the reason why student cannot join a class.
+     */
+    public function getJoinClassRestrictionReason(Classes $class): ?string
+    {
+        if (!$this->hasSubject($class->subject_id)) {
+            return 'Student is not enrolled in the subject: ' . $class->subject->getName();
+        }
+        
+        if (!$class->acceptsGrade($this->grade)) {
+            return 'Student grade (' . $this->grade . ') is not accepted by this class. Accepted grades: ' . $class->grade_levels_display;
+        }
+        
+        return null;
+    }
 }

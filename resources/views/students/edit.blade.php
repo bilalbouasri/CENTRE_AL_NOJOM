@@ -83,22 +83,10 @@
                     <!-- Grade -->
                     <div>
                         <label for="grade" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('messages.grade') }}</label>
-                        <select name="grade" id="grade" required
-                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 @error('grade') border-red-500 @enderror transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                            <option value="">Select Grade</option>
-                            <option value="1st Grade" {{ old('grade', $student->grade) == '1st Grade' ? 'selected' : '' }}>1st Grade</option>
-                            <option value="2nd Grade" {{ old('grade', $student->grade) == '2nd Grade' ? 'selected' : '' }}>2nd Grade</option>
-                            <option value="3rd Grade" {{ old('grade', $student->grade) == '3rd Grade' ? 'selected' : '' }}>3rd Grade</option>
-                            <option value="4th Grade" {{ old('grade', $student->grade) == '4th Grade' ? 'selected' : '' }}>4th Grade</option>
-                            <option value="5th Grade" {{ old('grade', $student->grade) == '5th Grade' ? 'selected' : '' }}>5th Grade</option>
-                            <option value="6th Grade" {{ old('grade', $student->grade) == '6th Grade' ? 'selected' : '' }}>6th Grade</option>
-                            <option value="7th Grade" {{ old('grade', $student->grade) == '7th Grade' ? 'selected' : '' }}>7th Grade</option>
-                            <option value="8th Grade" {{ old('grade', $student->grade) == '8th Grade' ? 'selected' : '' }}>8th Grade</option>
-                            <option value="9th Grade" {{ old('grade', $student->grade) == '9th Grade' ? 'selected' : '' }}>9th Grade</option>
-                            <option value="10th Grade" {{ old('grade', $student->grade) == '10th Grade' ? 'selected' : '' }}>10th Grade</option>
-                            <option value="11th Grade" {{ old('grade', $student->grade) == '11th Grade' ? 'selected' : '' }}>11th Grade</option>
-                            <option value="12th Grade" {{ old('grade', $student->grade) == '12th Grade' ? 'selected' : '' }}>12th Grade</option>
-                        </select>
+                        <input type="text" name="grade" id="grade" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 @error('grade') border-red-500 @enderror transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                               placeholder="Enter grade (e.g., 7, 9, etc.)"
+                               value="{{ old('grade', $student->grade) }}">
                         @error('grade')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror

@@ -141,7 +141,7 @@
                                     </div>
                                     <input type="number" name="total_amount" id="total_amount" required 
                                            class="block w-full ltr:pl-12 rtl:pr-12 ltr:pr-3 rtl:pl-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-lg font-medium transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                           placeholder="0.00">
+                                           >
                                 </div>
                                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400" id="amountPerSubject">
                                     {{ __('messages.amount_will_be_calculated') }}
@@ -287,7 +287,7 @@
                 }
             });
             
-            totalAmountInput.value = total.toFixed(2);
+            totalAmountInput.value = total > 0 ? total.toFixed(2) : '';
             
             // Update selected count
             selectedCount.textContent = translations.subjects_selected(selectedCountValue + paidCount);

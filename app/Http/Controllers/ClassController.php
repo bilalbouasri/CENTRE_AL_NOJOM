@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ClassController extends Controller
 {
@@ -32,6 +33,8 @@ class ClassController extends Controller
             'name' => 'required|string|max:255',
             'teacher_id' => 'required|exists:teachers,id',
             'subject_id' => 'required|exists:subjects,id',
+            'grade_levels' => 'nullable|array',
+            'grade_levels.*' => 'string|max:10',
             'students' => 'array',
             'schedules' => 'array',
             'schedules.*.day_of_week' => 'required|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
@@ -67,7 +70,12 @@ class ClassController extends Controller
     {
         $teachers = Teacher::all();
         $subjects = Subject::all();
-        $students = Student::all();
+        
+        // Get all students that can join this class (have the subject and correct grade level)
+        $students = Student::all()->filter(function($student) use ($class) {
+            return $student->canJoinClass($class);
+        });
+        
         $class->load(['students', 'schedules']);
 
         return view('classes.edit', compact('class', 'teachers', 'subjects', 'students'));
@@ -79,6 +87,8 @@ class ClassController extends Controller
             'name' => 'required|string|max:255',
             'teacher_id' => 'required|exists:teachers,id',
             'subject_id' => 'required|exists:subjects,id',
+            'grade_levels' => 'nullable|array',
+            'grade_levels.*' => 'string|max:10',
             'students' => 'array',
             'schedules' => 'array',
             'schedules.*.day_of_week' => 'required|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
@@ -124,9 +134,40 @@ class ClassController extends Controller
             'students.*' => 'exists:students,id',
         ]);
 
-        $class->students()->syncWithoutDetaching($validated['students']);
+        // Filter students who have the class subject and correct grade level
+        $eligibleStudents = [];
+        $ineligibleStudents = [];
 
-        return redirect()->route('classes.show', $class)->with('success', __('Students added to class successfully.'));
+        foreach ($validated['students'] as $studentId) {
+            $student = Student::find($studentId);
+            if ($student->canJoinClass($class)) {
+                $eligibleStudents[] = $studentId;
+            } else {
+                $reason = $student->getJoinClassRestrictionReason($class);
+                $ineligibleStudents[] = $student->full_name . ' (' . $reason . ')';
+            }
+        }
+
+        // Add only eligible students to the class
+        if (!empty($eligibleStudents)) {
+            $class->students()->syncWithoutDetaching($eligibleStudents);
+        }
+
+        // Prepare success message
+        $message = '';
+        if (!empty($eligibleStudents)) {
+            $message = __('Students added to class successfully.');
+        }
+        
+        if (!empty($ineligibleStudents)) {
+            $ineligibleNames = implode(', ', $ineligibleStudents);
+            $message .= ' ' . __('The following students were not added because they are not enrolled in the subject: :names', ['names' => $ineligibleNames]);
+        }
+
+        return redirect()->route('classes.show', $class)->with(
+            !empty($eligibleStudents) ? 'success' : 'warning',
+            $message ?: __('No students were added to the class.')
+        );
     }
 
     /**

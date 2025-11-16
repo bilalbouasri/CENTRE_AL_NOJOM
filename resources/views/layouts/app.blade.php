@@ -187,7 +187,7 @@
 <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <div id="sidebar" class="sidebar-transition bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm z-40 sticky top-0 h-screen overflow-y-auto w-64 lg:translate-x-0 -translate-x-full">
+        <div id="sidebar" class="sidebar-transition bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm z-40 sticky top-0 h-screen overflow-y-auto w-20 lg:translate-x-0 -translate-x-full">
             <!-- Sidebar Content -->
             <div class="flex flex-col h-full">
                 <!-- Logo and Toggle -->
@@ -198,7 +198,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
                         </button>
-                        <span id="logo-text" class="text-xl font-bold text-gray-800 dark:text-white">Admin</span>
+                        <span id="logo-text" class="text-xl font-bold text-gray-800 dark:text-white hidden">Admin</span>
                     </div>
                 </div>
 
@@ -210,7 +210,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('dashboard') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
-                        <span id="dashboard-text" class="ltr:ml-3 rtl:mr-3 font-medium">{{ __('messages.dashboard') }}</span>
+                        <span id="dashboard-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">{{ __('messages.dashboard') }}</span>
                     </a>
                     
                     <!-- Students -->
@@ -219,7 +219,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('students.*') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
-                        <span id="students-text" class="ltr:ml-3 rtl:mr-3 font-medium">{{ __('messages.students') }}</span>
+                        <span id="students-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">{{ __('messages.students') }}</span>
                     </a>
                     
                     <!-- Teachers -->
@@ -228,7 +228,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('teachers.*') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        <span id="teachers-text" class="ltr:ml-3 rtl:mr-3 font-medium">{{ __('messages.teachers') }}</span>
+                        <span id="teachers-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">{{ __('messages.teachers') }}</span>
                     </a>
                     
                     <!-- Classes -->
@@ -237,7 +237,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('classes.*') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                         </svg>
-                        <span id="classes-text" class="ltr:ml-3 rtl:mr-3 font-medium">{{ __('messages.classes') }}</span>
+                        <span id="classes-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">{{ __('messages.classes') }}</span>
                     </a>
                     
                     <!-- Payments -->
@@ -246,7 +246,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('payments.*') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                         </svg>
-                        <span id="payments-text" class="ltr:ml-3 rtl:mr-3 font-medium">{{ __('messages.payments') }}</span>
+                        <span id="payments-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">{{ __('messages.payments') }}</span>
                     </a>
                     
                     <!-- Subjects -->
@@ -255,7 +255,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('subjects.*') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
-                        <span id="subjects-text" class="ltr:ml-3 rtl:mr-3 font-medium">{{ __('messages.subjects') }}</span>
+                        <span id="subjects-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">{{ __('messages.subjects') }}</span>
                     </a>
 
                     <!-- Unpaid Students Report -->
@@ -264,7 +264,7 @@
                         <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('unpaid-students.*') ? 'text-red-600 dark:text-red-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
                         </svg>
-                        <span id="unpaid-students-text" class="ltr:ml-3 rtl:mr-3 font-medium">Unpaid Students</span>
+                        <span id="unpaid-students-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">Unpaid Students</span>
                     </a>
                 </nav>
 
@@ -274,7 +274,7 @@
                         <div class="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-medium">
                             {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'G' }}
                         </div>
-                        <div id="user-info" class="flex-1 min-w-0">
+                        <div id="user-info" class="flex-1 min-w-0 hidden">
                             <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ Auth::check() ? Auth::user()->email : 'Not logged in' }}</p>
                         </div>

@@ -167,22 +167,10 @@
                                 {{ __('messages.grade') }}
                                 <span class="text-red-500 ltr:ml-1 rtl:mr-1">*</span>
                             </label>
-                            <select name="grade" id="grade" required
-                                    class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200 @error('grade') border-red-500 ring-2 ring-red-200 @enderror">
-                                <option value="" class="text-gray-500">{{ __('messages.select_grade_level') }}</option>
-                                <option value="1st Grade" {{ old('grade') == '1st Grade' ? 'selected' : '' }}>{{ __('messages.first_grade') }}</option>
-                                <option value="2nd Grade" {{ old('grade') == '2nd Grade' ? 'selected' : '' }}>{{ __('messages.second_grade') }}</option>
-                                <option value="3rd Grade" {{ old('grade') == '3rd Grade' ? 'selected' : '' }}>{{ __('messages.third_grade') }}</option>
-                                <option value="4th Grade" {{ old('grade') == '4th Grade' ? 'selected' : '' }}>{{ __('messages.fourth_grade') }}</option>
-                                <option value="5th Grade" {{ old('grade') == '5th Grade' ? 'selected' : '' }}>{{ __('messages.fifth_grade') }}</option>
-                                <option value="6th Grade" {{ old('grade') == '6th Grade' ? 'selected' : '' }}>{{ __('messages.sixth_grade') }}</option>
-                                <option value="7th Grade" {{ old('grade') == '7th Grade' ? 'selected' : '' }}>{{ __('messages.seventh_grade') }}</option>
-                                <option value="8th Grade" {{ old('grade') == '8th Grade' ? 'selected' : '' }}>{{ __('messages.eighth_grade') }}</option>
-                                <option value="9th Grade" {{ old('grade') == '9th Grade' ? 'selected' : '' }}>{{ __('messages.ninth_grade') }}</option>
-                                <option value="10th Grade" {{ old('grade') == '10th Grade' ? 'selected' : '' }}>{{ __('messages.tenth_grade') }}</option>
-                                <option value="11th Grade" {{ old('grade') == '11th Grade' ? 'selected' : '' }}>{{ __('messages.eleventh_grade') }}</option>
-                                <option value="12th Grade" {{ old('grade') == '12th Grade' ? 'selected' : '' }}>{{ __('messages.twelfth_grade') }}</option>
-                            </select>
+                            <input type="text" name="grade" id="grade" required
+                                   class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 @error('grade') border-red-500 ring-2 ring-red-200 @enderror"
+                                   placeholder="{{ __('messages.enter_grade_placeholder') }}"
+                                   value="{{ old('grade') }}">
                             @error('grade')
                                 <p class="text-sm text-red-600 dark:text-red-400 flex items-center mt-2">
                                     <svg class="w-4 h-4 ltr:mr-1 rtl:ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

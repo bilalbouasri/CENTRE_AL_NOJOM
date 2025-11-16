@@ -243,7 +243,15 @@ class StudentController extends Controller
      */
     public function joinClass(Student $student)
     {
-        $classes = Classes::with(['teacher', 'subject'])->get();
+        // Get classes where the student has the subject and grade level matches
+        $classes = Classes::with(['teacher', 'subject'])
+            ->whereHas('subject', function($query) use ($student) {
+                $query->whereIn('id', $student->subjects->pluck('id'));
+            })
+            ->get()
+            ->filter(function($class) use ($student) {
+                return $class->acceptsGrade($student->grade);
+            });
 
         return view('students.join-class', compact('student', 'classes'));
     }
@@ -257,10 +265,20 @@ class StudentController extends Controller
             'class_id' => 'required|exists:classes,id',
         ]);
 
+        // Get the class
+        $class = Classes::findOrFail($validated['class_id']);
+
         // Check if student is already in this class
         if ($student->classes()->where('class_id', $validated['class_id'])->exists()) {
             return redirect()->route('students.show', $student)
                 ->with('error', 'Student is already in this class.');
+        }
+
+        // Check if student can join the class (subject and grade level)
+        if (!$student->canJoinClass($class)) {
+            $reason = $student->getJoinClassRestrictionReason($class);
+            return redirect()->route('students.show', $student)
+                ->with('error', 'Student cannot join this class: ' . $reason);
         }
 
         // Add student to class

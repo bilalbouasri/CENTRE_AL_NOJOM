@@ -49,37 +49,88 @@ window.App = {
         const logoText = document.getElementById('logo-text');
         const userInfo = document.getElementById('user-info');
         const navTexts = [
-            'dashboard-text', 'students-text', 'teachers-text', 
+            'dashboard-text', 'students-text', 'teachers-text',
             'classes-text', 'payments-text', 'subjects-text', 'unpaid-students-text'
         ];
 
-        function toggleSidebar() {
-            const isCollapsed = sidebar.classList.contains('w-20');
-            
-            if (isCollapsed) {
-                // Expand sidebar
-                sidebar.classList.remove('w-20');
-                sidebar.classList.add('w-64');
-                if (logoText) logoText.classList.remove('hidden');
-                if (userInfo) userInfo.classList.remove('hidden');
+        // Get saved sidebar state from localStorage
+        const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+        const isCollapsed = savedSidebarState === 'true';
+
+        // Initialize sidebar state on page load
+        function initializeSidebar() {
+            // Remove the default hidden state for desktop
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('lg:translate-x-0');
                 
-                // Show all navigation texts
-                navTexts.forEach(textId => {
-                    const element = document.getElementById(textId);
-                    if (element) element.classList.remove('hidden');
-                });
+                // Desktop: apply saved state, default to collapsed (which is already set in HTML)
+                // Only expand if user has explicitly saved an expanded state
+                if (savedSidebarState === 'false') {
+                    expandSidebar();
+                }
+                // Otherwise, keep the default collapsed state (no action needed)
             } else {
-                // Collapse sidebar
-                sidebar.classList.remove('w-64');
-                sidebar.classList.add('w-20');
-                if (logoText) logoText.classList.add('hidden');
-                if (userInfo) userInfo.classList.add('hidden');
-                
-                // Hide all navigation texts
-                navTexts.forEach(textId => {
-                    const element = document.getElementById(textId);
-                    if (element) element.classList.add('hidden');
-                });
+                // Mobile: always start collapsed (hidden)
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('lg:translate-x-0');
+            }
+        }
+
+        function collapseSidebar() {
+            sidebar.classList.add('w-20');
+            sidebar.classList.remove('w-64');
+            
+            // Hide text elements
+            if (logoText) logoText.classList.add('hidden');
+            if (userInfo) userInfo.classList.add('hidden');
+            
+            // Hide all navigation texts
+            navTexts.forEach(textId => {
+                const element = document.getElementById(textId);
+                if (element) element.classList.add('hidden');
+            });
+            
+            // Save state
+            localStorage.setItem('sidebarCollapsed', 'true');
+        }
+        
+        function expandSidebar() {
+            sidebar.classList.remove('w-20');
+            sidebar.classList.add('w-64');
+            
+            // Show text elements
+            if (logoText) logoText.classList.remove('hidden');
+            if (userInfo) userInfo.classList.remove('hidden');
+            
+            // Show all navigation texts
+            navTexts.forEach(textId => {
+                const element = document.getElementById(textId);
+                if (element) element.classList.remove('hidden');
+            });
+            
+            // Save state
+            localStorage.setItem('sidebarCollapsed', 'false');
+        }
+
+        function toggleSidebar() {
+            if (window.innerWidth >= 1024) {
+                // Desktop toggle
+                if (sidebar.classList.contains('w-20')) {
+                    expandSidebar();
+                } else {
+                    collapseSidebar();
+                }
+            } else {
+                // Mobile toggle - just show/hide using translate
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('lg:translate-x-0');
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                }
             }
         }
 
@@ -89,9 +140,52 @@ window.App = {
 
         if (mobileSidebarToggle) {
             mobileSidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('-translate-x-full');
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('lg:translate-x-0');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('lg:translate-x-0');
+                }
             });
         }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                // Desktop: apply saved state and ensure visible
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('lg:translate-x-0');
+                if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                    collapseSidebar();
+                } else {
+                    expandSidebar();
+                }
+            } else {
+                // Mobile: always hidden by default
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('lg:translate-x-0');
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                }
+            }
+        });
+
+        // Initialize sidebar
+        initializeSidebar();
+        
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth < 1024 &&
+                !sidebar.contains(event.target) &&
+                mobileSidebarToggle &&
+                !mobileSidebarToggle.contains(event.target) &&
+                !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('lg:translate-x-0');
+            }
+        });
     },
 
     // Flash Messages
