@@ -22,9 +22,30 @@ class ClassController extends Controller
     {
         $teachers = Teacher::all();
         $subjects = Subject::all();
-        $students = Student::all();
 
-        return view('classes.create', compact('teachers', 'subjects', 'students'));
+        return view('classes.create', compact('teachers', 'subjects'));
+    }
+
+    public function enrollStudents(Classes $class)
+    {
+        // Get students who are eligible to join this class
+        // - Have the correct grade level (if class has grade restrictions)
+        // - Are enrolled in the class subject
+        $eligibleStudents = Student::whereHas('subjects', function($query) use ($class) {
+            $query->where('subjects.id', $class->subject_id);
+        })->get()->filter(function($student) use ($class) {
+            return $student->canJoinClass($class);
+        });
+
+        // Get students already in the class
+        $currentStudents = $class->students->pluck('id')->toArray();
+
+        // Filter out students already in the class
+        $availableStudents = $eligibleStudents->filter(function($student) use ($currentStudents) {
+            return !in_array($student->id, $currentStudents);
+        });
+
+        return view('classes.enroll-students', compact('class', 'availableStudents'));
     }
 
     public function store(Request $request)

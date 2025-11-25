@@ -154,38 +154,6 @@
                     </button>
                 </div>
 
-                <!-- Students Selection -->
-                <div class="lg:col-span-2">
-                    <label class="block text-base font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('messages.students') }}
-                    </label>
-                    <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">Select students who will attend this class:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-80 overflow-y-auto border-2 border-gray-200 dark:border-gray-600 rounded-xl p-6 bg-white dark:bg-gray-700">
-                        @foreach($students as $student)
-                            <div class="flex items-center p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200">
-                                <input type="checkbox" name="students[]" value="{{ $student->id }}" id="student_{{ $student->id }}"
-                                       class="h-5 w-5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded transition-colors duration-200"
-                                       {{ in_array($student->id, old('students', [])) ? 'checked' : '' }}>
-                                <label for="student_{{ $student->id }}" class="ltr:ml-3 rtl:mr-3 flex-1">
-                                    <div class="text-lg font-medium text-gray-900 dark:text-white">
-                                        {{ $student->first_name }} {{ $student->last_name }}
-                                    </div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">
-                                        Grade: {{ $student->grade }}
-                                    </div>
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
-                    @error('students')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-                            <svg class="w-4 h-4 ltr:mr-2 rtl:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
             </div>
 
             <!-- Submit Buttons -->

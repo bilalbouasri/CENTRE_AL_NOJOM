@@ -95,7 +95,7 @@
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Students</h3>
                         <p class="text-lg text-gray-600 dark:text-gray-400 mt-1">{{ $class->students->count() }} enrolled</p>
                     </div>
-                    <a href="{{ route('students.join-class', $class) }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <a href="{{ route('classes.enroll-students', $class) }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl">
                         <svg class="w-5 h-5 ltr:mr-3 rtl:ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
@@ -137,7 +137,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-base font-medium">
                                             <div class="flex space-x-3">
                                                 <a href="{{ route('students.show', $student) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors duration-200 font-semibold">View</a>
-                                                <form action="{{ route('classes.remove-student', [$class, $student]) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove this student from the class?')">
+                                                <form action="{{ route('classes.remove-students', [$class, $student]) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove this student from the class?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200 font-semibold">Remove</button>
@@ -158,7 +158,7 @@
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No students enrolled</h3>
                         <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">Start building your class by adding students who will participate in this course.</p>
-                        <a href="{{ route('students.join-class', $class) }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl text-lg">
+                        <a href="{{ route('classes.enroll-students', $class) }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all duration-300 shadow-lg hover:shadow-xl text-lg">
                             <svg class="w-6 h-6 ltr:mr-3 rtl:ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>

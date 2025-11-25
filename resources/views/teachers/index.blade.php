@@ -14,13 +14,13 @@
                 </h1>
                 <p class="text-gray-600 dark:text-gray-300 mt-2">Manage all teachers in your educational center</p>
             </div>
-            <button onclick="openCreateModal()" 
+            <a href="{{ route('teachers.create') }}" 
                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
                 {{ __('messages.add_new') }}
-            </button>
+            </a>
         </div>
     </div>
 
@@ -217,13 +217,13 @@
                 </svg>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No teachers found</h3>
                 <p class="text-gray-500 dark:text-gray-400 mb-4">Get started by adding your first teacher.</p>
-                <button onclick="openCreateModal()" 
+                <a href="{{ route('teachers.create') }}" 
                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
                     Add First Teacher
-                </button>
+                </a>
             </div>
         @endif
     </div>
@@ -467,9 +467,113 @@
 
 <!-- Teacher-specific JavaScript -->
 @push('scripts')
-<script type="module">
-    import { TeacherManager } from '/resources/js/modules/teachers.js';
-    TeacherManager.initAll();
+<script>
+// Simple modal functions for teacher management
+function openCreateModal() {
+    document.getElementById('createModal').style.display = 'block';
+}
+
+function closeCreateModal() {
+    document.getElementById('createModal').style.display = 'none';
+}
+
+function openEditModal(teacherId) {
+    document.getElementById('editModal').style.display = 'block';
+    
+    // Load teacher data via AJAX
+    fetch(`/teachers/${teacherId}/edit`)
+        .then(response => response.text())
+        .then(html => {
+            // Extract the form from the response
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const form = doc.querySelector('form');
+            
+            if (form) {
+                // Update the form action to use the update route
+                form.action = `/teachers/${teacherId}`;
+                form.method = 'POST';
+                
+                // Add method spoofing for PUT request
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'PUT';
+                form.appendChild(methodInput);
+                
+                // Add CSRF token if not present
+                if (!form.querySelector('input[name="_token"]')) {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+                }
+                
+                document.getElementById('editModalContent').innerHTML = '';
+                document.getElementById('editModalContent').appendChild(form);
+                
+                // Focus on first input
+                setTimeout(() => {
+                    const firstInput = form.querySelector('input');
+                    if (firstInput) firstInput.focus();
+                }, 100);
+            } else {
+                document.getElementById('editModalContent').innerHTML = '<p style="color: #ef4444; text-align: center; padding: 40px;" class="dark:text-red-400">Error loading teacher data</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading teacher data:', error);
+            document.getElementById('editModalContent').innerHTML = '<p style="color: #ef4444; text-align: center; padding: 40px;" class="dark:text-red-400">Error loading teacher data</p>';
+        });
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    // Reset modal content for next use
+    document.getElementById('editModalContent').innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div style="width: 48px; height: 48px; border: 3px solid #e5e7eb; border-top: 3px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;" class="dark:border-gray-600"></div>
+            <p style="color: #6b7280; font-size: 14px;" class="dark:text-gray-300">Loading teacher information...</p>
+        </div>
+    `;
+}
+
+function openViewModal(teacherId) {
+    window.location.href = `/teachers/${teacherId}`;
+}
+
+// Close modals when clicking outside
+document.addEventListener('DOMContentLoaded', function() {
+    // Create modal
+    const createModal = document.getElementById('createModal');
+    if (createModal) {
+        createModal.addEventListener('click', function(e) {
+            if (e.target === createModal) {
+                closeCreateModal();
+            }
+        });
+    }
+
+    // Edit modal
+    const editModal = document.getElementById('editModal');
+    if (editModal) {
+        editModal.addEventListener('click', function(e) {
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+    }
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeCreateModal();
+            closeEditModal();
+        }
+    });
+});
 </script>
 @endpush
 @endsection

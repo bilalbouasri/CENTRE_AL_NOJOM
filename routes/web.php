@@ -85,15 +85,31 @@ Route::middleware(['auth', 'localization'])->group(function () {
     // =====================================================================
     // TEACHER MANAGEMENT
     // =====================================================================
-    Route::resource('teachers', TeacherController::class);
+    Route::prefix('teachers')->name('teachers.')->group(function () {
+        Route::get('/', [TeacherController::class, 'index'])->name('index');
+        Route::get('/create', [TeacherController::class, 'create'])->name('create');
+        Route::post('/', [TeacherController::class, 'store'])->name('store');
+        Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+        Route::get('/{teacher}/edit', [TeacherController::class, 'edit'])->name('edit');
+        Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
+        Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+    });
 
     // =====================================================================
     // CLASS MANAGEMENT
     // =====================================================================
     Route::prefix('classes')->name('classes.')->group(function () {
-        Route::resource('/', ClassController::class)->parameters(['' => 'class']);
+        Route::get('/', [ClassController::class, 'index'])->name('index');
+        Route::get('/create', [ClassController::class, 'create'])->name('create');
+        Route::post('/', [ClassController::class, 'store'])->name('store');
+        Route::get('/{class}', [ClassController::class, 'show'])->name('show');
+        Route::get('/{class}/edit', [ClassController::class, 'edit'])->name('edit');
+        Route::put('/{class}', [ClassController::class, 'update'])->name('update');
+        Route::delete('/{class}', [ClassController::class, 'destroy'])->name('destroy');
         
         // Additional class routes
+        Route::get('/{class}/enroll-students', [ClassController::class, 'enrollStudents'])
+            ->name('enroll-students');
         Route::post('/{class}/append-students', [ClassController::class, 'appendStudents'])
             ->name('append-students');
         Route::post('/{class}/remove-students', [ClassController::class, 'removeStudents'])
