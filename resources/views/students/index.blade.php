@@ -591,14 +591,61 @@
 
 <!-- Student-specific JavaScript -->
 @push('scripts')
-<script type="module">
-    import { ViewManager } from '/resources/js/modules/views.js';
-    import { FormManager } from '/resources/js/modules/forms.js';
-    
-    // Initialize student-specific functionality
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        ViewManager.initAll();
-        FormManager.initFilterPanel();
+        // Initialize filter panel functionality
+        const filterToggle = document.getElementById('filter-toggle');
+        const filtersPanel = document.getElementById('filters-panel');
+        const closeFilters = document.getElementById('close-filters');
+        const resetFilters = document.getElementById('reset-filters');
+
+        if (filterToggle && filtersPanel) {
+            filterToggle.addEventListener('click', function() {
+                filtersPanel.classList.toggle('hidden');
+            });
+
+            if (closeFilters) {
+                closeFilters.addEventListener('click', function() {
+                    filtersPanel.classList.add('hidden');
+                });
+            }
+
+            if (resetFilters) {
+                resetFilters.addEventListener('click', function() {
+                    const form = filtersPanel.querySelector('form');
+                    form.reset();
+                });
+            }
+
+            // Close filters when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!filtersPanel.contains(event.target) && !filterToggle.contains(event.target)) {
+                    filtersPanel.classList.add('hidden');
+                }
+            });
+        }
+
+        // Initialize view toggle functionality
+        const cardViewBtn = document.getElementById('card-view-btn');
+        const tableViewBtn = document.getElementById('table-view-btn');
+        const cardView = document.getElementById('card-view');
+        const tableView = document.getElementById('table-view');
+
+        if (cardViewBtn && tableViewBtn && cardView && tableView) {
+            cardViewBtn.addEventListener('click', function() {
+                cardView.classList.remove('hidden');
+                tableView.classList.add('hidden');
+                cardViewBtn.classList.add('bg-primary-500', 'text-white');
+                tableViewBtn.classList.remove('bg-primary-500', 'text-white');
+            });
+
+            tableViewBtn.addEventListener('click', function() {
+                tableView.classList.remove('hidden');
+                cardView.classList.add('hidden');
+                tableViewBtn.classList.add('bg-primary-500', 'text-white');
+                cardViewBtn.classList.remove('bg-primary-500', 'text-white');
+            });
+        }
     });
 </script>
 @endpush
