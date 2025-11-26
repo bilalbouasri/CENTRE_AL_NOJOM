@@ -266,6 +266,15 @@
                         </svg>
                         <span id="unpaid-students-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">Unpaid Students</span>
                     </a>
+
+                    <!-- User Management -->
+                    <a href="{{ route('users.index') }}"
+                       class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group {{ request()->routeIs('users.*') ? 'bg-purple-50 dark:bg-purple-900 text-purple-600 dark:text-purple-300' : 'text-gray-700 dark:text-gray-300' }}">
+                        <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs('users.*') ? 'text-purple-600 dark:text-purple-300' : 'text-gray-500 dark:text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                        </svg>
+                        <span id="users-text" class="ltr:ml-3 rtl:mr-3 font-medium hidden">Users</span>
+                    </a>
                 </nav>
 
                 <!-- User Section -->

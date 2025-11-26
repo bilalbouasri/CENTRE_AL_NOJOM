@@ -202,7 +202,7 @@
                         </a>
 
                         <a href="{{ route('payments.create-bulk') }}"
-                            class="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg p-3 text-center transition-colors duration-200">
+                           class="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg p-3 text-center transition-colors duration-200">
                             <svg class="w-5 h-5 text-red-600 dark:text-red-400 mx-auto mb-1" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -210,6 +210,18 @@
                             </svg>
                             <span
                                 class="text-xs font-medium text-red-900 dark:text-red-300">{{ __('messages.bulk_payment') }}</span>
+                        </a>
+
+                        <!-- User Management -->
+                        <a href="{{ route('users.index') }}"
+                           class="bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 rounded-lg p-3 text-center transition-colors duration-200">
+                            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400 mx-auto mb-1" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                            </svg>
+                            <span
+                                class="text-xs font-medium text-purple-900 dark:text-purple-300">Users</span>
                         </a>
                     </div>
                 </div>

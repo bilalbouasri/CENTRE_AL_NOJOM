@@ -14,7 +14,8 @@ use App\Http\Controllers\{
     HomeController,
     UnpaidStudentsController,
     ReportController,
-    TeacherPaymentController
+    TeacherPaymentController,
+    UserController
 };
 
 /*
@@ -172,5 +173,26 @@ Route::middleware(['auth', 'localization'])->group(function () {
         // Teacher earnings report
         Route::get('/teacher-earnings', [ReportController::class, 'teacherEarnings'])
             ->name('teacher-earnings');
+    });
+
+    // =====================================================================
+    // USER MANAGEMENT (Admin Only)
+    // =====================================================================
+    Route::prefix('users')->name('users.')->middleware('admin')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::get('/{user}', [UserController::class, 'show'])->name('show');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        
+        // Additional user routes
+        Route::get('/{user}/change-password', [UserController::class, 'showChangePasswordForm'])
+            ->name('change-password');
+        Route::post('/{user}/change-password', [UserController::class, 'changePassword'])
+            ->name('update-password');
+        Route::post('/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+            ->name('toggle-status');
     });
 });
